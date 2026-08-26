@@ -142,6 +142,33 @@
   .fset .rm { background: #f7e9e7; color: #b0392f; border-radius: 8px; padding: 8px 12px; font-size: 16px; font-weight: 700; }
   .note { background: #fff8e1; border-left: 4px solid #ffb300; padding: 10px; font-size: 14px; border-radius: 6px; margin: 10px 0; }
   .ver { text-align: center; color: #9db1bf; font-size: 12px; padding: 6px 0 14px; }
+
+  /* ===== スマホ幅（〜480px）===== */
+  @media (max-width: 480px) {
+    .topbar { padding: 6px; gap: 6px; }
+    .topbar .tbl { font-size: 17px; padding: 9px 10px; }
+    .topbar .own { font-size: 17px; padding: 7px 10px; }
+    .topbar .own small { font-size: 11px; }
+    .topbar .gear { font-size: 24px; padding: 4px 6px; }
+    .board { margin: 8px; padding: 10px; }
+    .board .num { font-size: 48px; }
+    .board .num .u { font-size: 18px; }
+    .board .lbl { font-size: 14px; }
+    .board .sub { font-size: 13px; }
+    .board.short .warn { font-size: 15px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; padding: 0 8px 8px; }
+    .card .nm { font-size: 18px; padding: 6px 4px 5px; }
+    .card .btns button { font-size: 16px; padding: 14px 2px; }
+    .card .btns button .pt { font-size: 13px; }
+    .listwrap { padding: 0 8px 84px; }
+    .item { padding: 10px; }
+    .item .t { font-size: 17px; }
+    .item .p { font-size: 17px; }
+    .bottom { gap: 6px; padding: 6px; }
+    .bottom button { font-size: 15px; padding: 14px 2px; }
+    .disp { font-size: 36px; }
+    .pad button { padding: 16px 0; font-size: 24px; }
+  }
 </style>
 </head>
 <body>
