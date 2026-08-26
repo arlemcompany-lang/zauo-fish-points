@@ -2,25 +2,484 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0b3c5d">
 <title>釣りポイント計算</title>
 <style>
-  body { margin:0; font-family:"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
-         background:#eef4f8; color:#14212b; display:flex; flex-direction:column;
-         align-items:center; justify-content:center; min-height:100vh; padding:20px; }
-  h1 { font-size:26px; margin:0 0 6px; color:#0b3c5d; }
-  p { color:#5b7385; margin:0 0 24px; font-size:15px; }
-  a { display:block; width:100%; max-width:420px; text-decoration:none; text-align:center;
-      background:#0b3c5d; color:#fff; font-size:24px; font-weight:800; padding:26px 16px;
-      border-radius:16px; margin-bottom:14px; box-shadow:0 2px 8px rgba(0,0,0,.15); }
-  a span { display:block; font-size:14px; font-weight:500; opacity:.85; margin-top:6px; }
-  a.soon { background:#c7d5df; color:#6b8296; box-shadow:none; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0; min-height: 100%;
+    font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+    background: #eef4f8; color: #14212b;
+    touch-action: manipulation; -webkit-text-size-adjust: 100%;
+  }
+  button { font-family: inherit; border: none; cursor: pointer; }
+
+  /* ===== 見出し ===== */
+  .head {
+    background: #0b3c5d; color: #fff; padding: 14px 16px 16px; text-align: center;
+  }
+  .head h1 { margin: 0; font-size: 22px; letter-spacing: .04em; }
+  .head p { margin: 6px 0 0; font-size: 14px; opacity: .85; }
+
+  /* ===== 所持ポイント入力 ===== */
+  .ownbox {
+    margin: -8px 12px 0; background: #fff; border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1); overflow: hidden;
+  }
+  .ownbox button {
+    width: 100%; background: #fff; padding: 14px 16px; text-align: left;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .ownbox .l { font-size: 16px; font-weight: 700; color: #33566d; }
+  .ownbox .l small { display: block; font-size: 12px; font-weight: 400; color: #8ba0af; margin-top: 3px; }
+  .ownbox .v { font-size: 34px; font-weight: 800; color: #0b3c5d; white-space: nowrap; }
+  .ownbox .v em { font-size: 16px; font-style: normal; margin-left: 3px; }
+  .ownbox .v .tap { font-size: 15px; font-weight: 700; color: #fff; background: #1f7ab5; border-radius: 8px; padding: 8px 14px; }
+
+  /* ===== 残ポイント ===== */
+  .board {
+    background: #fff; margin: 12px; border-radius: 16px; padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1); text-align: center;
+  }
+  .board .lbl { font-size: 15px; color: #5b7385; font-weight: 700; }
+  .board .num { font-size: 68px; font-weight: 800; line-height: 1.05; color: #0b7a3b; margin-top: 4px; }
+  .board .num .u { font-size: 22px; font-weight: 700; margin-left: 4px; }
+  .board .sub { font-size: 14px; color: #7a8fa0; margin-top: 6px; }
+  .board.short .num { color: #c62828; }
+  .board .callout {
+    display: none; margin-top: 12px; background: #fdecea; color: #b0392f;
+    border-radius: 10px; padding: 12px; font-size: 16px; font-weight: 700; line-height: 1.5;
+  }
+  .board.short .callout { display: block; }
+
+  /* ===== 魚ボタン ===== */
+  .sect { font-size: 14px; color: #5b7385; font-weight: 700; margin: 0 14px 8px; }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px; padding: 0 12px 12px;
+  }
+  .card {
+    background: #fff; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  }
+  .card.over { opacity: .45; }
+  .card .nm {
+    padding: 9px 10px 7px; font-size: 21px; font-weight: 800; text-align: center;
+    border-bottom: 1px solid #e3ecf2;
+  }
+  .card .btns { display: flex; }
+  .card .btns button {
+    flex: 1; padding: 17px 6px; font-size: 19px; font-weight: 800; color: #fff;
+    background: #1f7ab5; border-right: 1px solid rgba(255,255,255,.3);
+  }
+  .card .btns button:last-child { border-right: none; }
+  .card .btns button.half { background: #46a2c9; }
+  .card .btns button.custom { background: #7a5ea8; font-size: 17px; }
+  .card .btns button:active { filter: brightness(.85); }
+  .card .btns button .pt { display: block; font-size: 14px; font-weight: 600; opacity: .95; }
+
+  /* ===== 選んだ内訳 ===== */
+  .listwrap { padding: 0 12px 96px; }
+  .item {
+    background: #fff; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+  .item .t { flex: 1; font-size: 19px; font-weight: 700; }
+  .item .p { font-size: 19px; font-weight: 800; color: #1f7ab5; }
+  .item .del { background: #f2f5f7; color: #b0392f; font-size: 20px; font-weight: 800; border-radius: 10px; padding: 8px 16px; }
+  .empty { color: #8ba0af; text-align: center; padding: 20px 0; font-size: 15px; line-height: 1.6; }
+
+  /* ===== 下部バー ===== */
+  .bottom {
+    position: fixed; left: 0; right: 0; bottom: 0; display: flex; gap: 8px;
+    padding: 8px; background: rgba(238,244,248,.96); border-top: 1px solid #d6e2ea;
+  }
+  .bottom button {
+    flex: 1; padding: 16px 4px; font-size: 17px; font-weight: 800; border-radius: 12px;
+    background: #fff; color: #14212b; box-shadow: 0 1px 4px rgba(0,0,0,.1);
+  }
+  .bottom button.main { background: #0b3c5d; color: #fff; }
+
+  /* ===== モーダル ===== */
+  .mask {
+    position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5);
+    display: none; align-items: center; justify-content: center; padding: 12px; z-index: 50;
+  }
+  .mask.on { display: flex; }
+  .modal { background: #fff; border-radius: 16px; width: 100%; max-width: 460px; max-height: 92%; overflow: auto; padding: 16px; }
+  .modal h2 { margin: 0 0 12px; font-size: 20px; }
+  .modal .row { display: flex; gap: 8px; margin-top: 10px; }
+  .modal .row button { flex: 1; padding: 14px; font-size: 18px; font-weight: 800; border-radius: 12px; background: #eef4f8; }
+  .modal .row button.ok { background: #0b3c5d; color: #fff; }
+
+  .disp { font-size: 44px; font-weight: 800; text-align: right; padding: 10px 14px; background: #f2f7fa; border-radius: 12px; min-height: 64px; }
+  .pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+  .pad button { padding: 20px 0; font-size: 26px; font-weight: 800; border-radius: 12px; background: #eef4f8; }
+  .pad button.act { background: #dce9f2; }
+
+  .fset { border: 1px solid #dbe6ee; border-radius: 12px; padding: 10px; margin-bottom: 8px; }
+  .fset .l1 { display: flex; gap: 6px; align-items: center; }
+  .fset input[type=text] { flex: 1; font-size: 18px; padding: 8px; border: 1px solid #cbd8e2; border-radius: 8px; min-width: 0; }
+  .fset input[type=number] { width: 76px; font-size: 18px; padding: 8px; border: 1px solid #cbd8e2; border-radius: 8px; }
+  .fset .l2 { margin-top: 8px; font-size: 15px; color: #48606f; display: flex; align-items: center; gap: 8px; }
+  .fset .rm { background: #f7e9e7; color: #b0392f; border-radius: 8px; padding: 8px 12px; font-size: 16px; font-weight: 700; }
+  .note { background: #fff8e1; border-left: 4px solid #ffb300; padding: 10px; font-size: 14px; border-radius: 6px; margin: 10px 0; line-height: 1.6; }
+  .ver { text-align: center; color: #9db1bf; font-size: 12px; padding: 6px 0 14px; }
+
+  /* ===== スマホ幅 ===== */
+  @media (max-width: 480px) {
+    .head { padding: 12px 12px 16px; }
+    .head h1 { font-size: 19px; }
+    .head p { font-size: 12px; }
+    .ownbox { margin: -8px 8px 0; }
+    .ownbox .v { font-size: 30px; }
+    .board { margin: 10px 8px; padding: 14px 10px; }
+    .board .num { font-size: 56px; }
+    .board .callout { font-size: 15px; }
+    .sect { margin: 0 10px 8px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 8px; padding: 0 8px 10px; }
+    .card .nm { font-size: 18px; }
+    .card .btns button { font-size: 16px; padding: 14px 2px; }
+    .card .btns button.custom { font-size: 14px; }
+    .card .btns button .pt { font-size: 13px; }
+    .listwrap { padding: 0 8px 88px; }
+    .item .t, .item .p { font-size: 17px; }
+    .bottom { gap: 6px; padding: 6px; }
+    .bottom button { font-size: 15px; padding: 14px 2px; }
+    .disp { font-size: 36px; }
+    .pad button { padding: 16px 0; font-size: 24px; }
+  }
 </style>
 </head>
 <body>
-  <h1>釣りポイント計算</h1>
-  <p>使う画面を選んでください</p>
-  <a href="staff/">スタッフ用<span>レシートの数字から残りポイントを計算</span></a>
-  <a class="soon" href="#">お客様用<span>準備中（何が釣れるかシミュレーター）</span></a>
+
+<div class="head">
+  <h1 id="ttl">釣りポイント計算</h1>
+  <p>釣りたいお魚を選ぶと、残りのポイントがわかります</p>
+</div>
+
+<div class="ownbox">
+  <button id="btnOwned">
+    <span class="l">お持ちのポイント<small>レシートに書かれている数字を入れてください</small></span>
+    <span class="v" id="ownVal"><span class="tap">タップして入力</span></span>
+  </button>
+</div>
+
+<div class="board" id="board">
+  <div class="lbl">残りポイント</div>
+  <div class="num" id="num">0<span class="u">pt</span></div>
+  <div class="sub" id="sub">まだお魚を選んでいません</div>
+  <div class="callout" id="callout"></div>
+</div>
+
+<div class="sect">釣りたいお魚をタップ</div>
+<div class="grid" id="grid"></div>
+
+<div class="listwrap">
+  <div class="sect" style="margin-left:2px">選んだお魚</div>
+  <div id="items"></div>
+</div>
+
+<div class="bottom">
+  <button id="btnUndo">1つ取消</button>
+  <button class="main" id="btnReset">最初から</button>
+</div>
+
+<!-- テンキー -->
+<div class="mask" id="mKeypad">
+  <div class="modal">
+    <h2 id="kpTitle">ポイントを入力</h2>
+    <div class="disp" id="kpDisp">0</div>
+    <div class="pad" id="kpPad">
+      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+      <button data-k="." class="act">.</button><button data-k="0">0</button><button data-k="bs" class="act">⌫</button>
+    </div>
+    <div class="row">
+      <button data-close="mKeypad">やめる</button>
+      <button class="ok" id="kpOk">決定</button>
+    </div>
+  </div>
+</div>
+
+<!-- 設定（スタッフ用・タイトル5回タップで開く） -->
+<div class="mask" id="mSet">
+  <div class="modal">
+    <h2>スタッフ設定（魚とポイント）</h2>
+    <div class="note">
+      ★タイの半身は <b>3.5pt（仮）</b> です。<br>
+      正式な枚数が決まったら「タイ」の半身の数字を書き換えて保存してください。
+    </div>
+    <div id="fsetList"></div>
+    <div class="row"><button id="btnAddFish">＋ 魚を追加</button></div>
+    <div class="row"><button id="btnDefault" style="background:#eef4f8">魚を初期値に戻す</button></div>
+    <div class="row"><button class="ok" id="btnSetOk">保存して閉じる</button></div>
+    <div class="ver">釣りポイント計算 お客様用 v2.0</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = 'zauo_fish_points_guest_v2';
+
+  function defFish() {
+    return [
+      { id: 'f1', name: 'サザエ',   p2: 2,  half: 0 },
+      { id: 'f2', name: '車海老',   p2: 2,  half: 0 },
+      { id: 'f3', name: 'アジ',     p2: 4,  half: 0 },
+      { id: 'f4', name: 'タイ',     p2: 14, half: 7 },
+      { id: 'f5', name: 'ヒラメ',   p2: 16, half: 8 },
+      { id: 'f6', name: 'シマアジ', p2: 24, half: 12 },
+      { id: 'f7', name: '伊勢海老', p2: 0,  half: 0, custom: true }
+    ];
+  }
+
+  var S = { owned2: 0, items: [], fish: defFish() };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      var o = JSON.parse(raw);
+      if (o && o.fish && o.items) S = o;
+    } catch (e) {}
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+  /* ポイントは内部で「×2の整数」で保持（3.5pt を誤差なく扱うため） */
+  function fmt(p2) {
+    var v = p2 / 2;
+    return (v % 1 === 0) ? String(v) : v.toFixed(1);
+  }
+  function used2() {
+    var s = 0;
+    for (var i = 0; i < S.items.length; i++) s += S.items[i].p2;
+    return s;
+  }
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  /* ================= 描画 ================= */
+  function render() {
+    var u = used2(), rest = S.owned2 - u;
+
+    document.getElementById('ownVal').innerHTML = S.owned2 > 0
+      ? fmt(S.owned2) + '<em>pt</em>'
+      : '<span class="tap">タップして入力</span>';
+
+    document.getElementById('num').innerHTML = fmt(rest) + '<span class="u">pt</span>';
+
+    var board = document.getElementById('board'),
+        sub = document.getElementById('sub'),
+        callout = document.getElementById('callout');
+
+    if (rest < 0) {
+      board.className = 'board short';
+      callout.innerHTML = 'ポイントが ' + fmt(-rest) + 'pt 足りません<br>' +
+        '<span style="font-weight:500;font-size:14px">ポイントの追加はスタッフにお声がけください</span>';
+    } else {
+      board.className = 'board';
+    }
+    sub.textContent = S.items.length
+      ? '選んだお魚 ' + S.items.length + '点 ／ 使用 ' + fmt(u) + 'pt'
+      : (S.owned2 > 0 ? 'お魚を選んでみましょう' : 'まずはお持ちのポイントを入れてください');
+
+    renderGrid(rest);
+    renderItems();
+    save();
+  }
+
+  function renderGrid(rest) {
+    var g = document.getElementById('grid'), h = '', i, f, cheapest;
+    for (i = 0; i < S.fish.length; i++) {
+      f = S.fish[i];
+      cheapest = f.custom ? 0 : (f.half > 0 ? f.half : f.p2);
+      h += '<div class="card' + (!f.custom && cheapest > rest ? ' over' : '') + '">' +
+             '<div class="nm">' + esc(f.name) + '</div><div class="btns">';
+      if (f.custom) {
+        h += '<button class="custom" data-add="' + f.id + '" data-kind="custom">ポイントを入力<span class="pt">大きさで変わります</span></button>';
+      } else {
+        h += '<button data-add="' + f.id + '" data-kind="full">まるごと<span class="pt">' + fmt(f.p2) + ' pt</span></button>';
+        if (f.half > 0) {
+          h += '<button class="half" data-add="' + f.id + '" data-kind="half">半身<span class="pt">' + fmt(f.half) + ' pt</span></button>';
+        }
+      }
+      h += '</div></div>';
+    }
+    g.innerHTML = h;
+  }
+
+  function renderItems() {
+    var w = document.getElementById('items'), h = '', i;
+    if (!S.items.length) {
+      w.innerHTML = '<div class="empty">まだ選んでいません。<br>上のお魚をタップしてください。</div>';
+      return;
+    }
+    for (i = S.items.length - 1; i >= 0; i--) {
+      h += '<div class="item"><div class="t">' + esc(S.items[i].label) + '</div>' +
+           '<div class="p">' + fmt(S.items[i].p2) + ' pt</div>' +
+           '<button class="del" data-del="' + i + '">×</button></div>';
+    }
+    w.innerHTML = h;
+  }
+
+  /* ================= 追加・削除 ================= */
+  function findFish(id) {
+    for (var i = 0; i < S.fish.length; i++) if (S.fish[i].id === id) return S.fish[i];
+    return null;
+  }
+  function addItem(id, kind) {
+    var f = findFish(id);
+    if (!f) return;
+    if (kind === 'custom') {
+      keypad(f.name + ' のポイント', 0, function (p2) {
+        if (p2 <= 0) return;
+        S.items.push({ label: f.name, p2: p2 });
+        render();
+      });
+      return;
+    }
+    var p2 = (kind === 'half') ? f.half : f.p2;
+    if (p2 <= 0) return;
+    S.items.push({ label: f.name + (kind === 'half' ? '（半身）' : ''), p2: p2 });
+    render();
+  }
+  function closestAttr(el, root, attr) {
+    while (el && el !== root) {
+      if (el.getAttribute && el.getAttribute(attr) !== null) return el;
+      el = el.parentNode;
+    }
+    return null;
+  }
+
+  document.getElementById('grid').addEventListener('click', function (e) {
+    var b = closestAttr(e.target, this, 'data-add');
+    if (b) addItem(b.getAttribute('data-add'), b.getAttribute('data-kind'));
+  });
+  document.getElementById('items').addEventListener('click', function (e) {
+    var b = closestAttr(e.target, this, 'data-del');
+    if (!b) return;
+    var i = parseInt(b.getAttribute('data-del'), 10);
+    if (!isNaN(i)) { S.items.splice(i, 1); render(); }
+  });
+  document.getElementById('btnUndo').onclick = function () {
+    if (S.items.length) { S.items.pop(); render(); }
+  };
+  document.getElementById('btnReset').onclick = function () {
+    if (!confirm('入力をすべて消して、最初からやり直しますか？')) return;
+    S.owned2 = 0; S.items = [];
+    render();
+    keypad('お持ちのポイント', 0, function (p2) { S.owned2 = p2; render(); });
+  };
+
+  /* ================= テンキー ================= */
+  var kpBuf = '0', kpCb = null;
+  function keypad(title, initP2, cb) {
+    kpBuf = initP2 ? fmt(initP2) : '0';
+    kpCb = cb;
+    document.getElementById('kpTitle').textContent = title;
+    document.getElementById('kpDisp').textContent = kpBuf;
+    openM('mKeypad');
+  }
+  document.getElementById('kpPad').addEventListener('click', function (e) {
+    var k = e.target.getAttribute('data-k');
+    if (!k) return;
+    if (k === 'bs') { kpBuf = kpBuf.length > 1 ? kpBuf.slice(0, -1) : '0'; }
+    else if (k === '.') { if (kpBuf.indexOf('.') < 0) kpBuf += '.'; }
+    else { kpBuf = (kpBuf === '0') ? k : kpBuf + k; }
+    document.getElementById('kpDisp').textContent = kpBuf;
+  });
+  document.getElementById('kpOk').onclick = function () {
+    var v = parseFloat(kpBuf);
+    if (isNaN(v) || v < 0) v = 0;
+    closeM('mKeypad');
+    if (kpCb) kpCb(Math.round(v * 2));
+  };
+  document.getElementById('btnOwned').onclick = function () {
+    keypad('お持ちのポイント', S.owned2, function (p2) { S.owned2 = p2; render(); });
+  };
+
+  /* ================= スタッフ設定（タイトル5回タップ） ================= */
+  var tapCount = 0, tapTimer = null;
+  document.getElementById('ttl').addEventListener('click', function () {
+    tapCount++;
+    if (tapTimer) clearTimeout(tapTimer);
+    tapTimer = setTimeout(function () { tapCount = 0; }, 2500);
+    if (tapCount >= 5) { tapCount = 0; renderSet(); openM('mSet'); }
+  });
+
+  function renderSet() {
+    var w = document.getElementById('fsetList'), h = '', i, f;
+    for (i = 0; i < S.fish.length; i++) {
+      f = S.fish[i];
+      h += '<div class="fset" data-i="' + i + '">' +
+             '<div class="l1">' +
+               '<input type="text" class="sName" value="' + esc(f.name) + '">' +
+               '<input type="number" class="sFull" step="0.5" min="0" value="' + (f.custom ? '' : (f.p2 / 2)) + '"' + (f.custom ? ' disabled' : '') + '> pt' +
+               '<button class="rm" data-rm="' + i + '">削除</button>' +
+             '</div>' +
+             '<div class="l2">' +
+               (f.custom
+                 ? 'その場でポイントを手入力する魚（伊勢海老など）'
+                 : '<label><input type="checkbox" class="sHasHalf"' + (f.half > 0 ? ' checked' : '') + '> 半身あり</label>' +
+                   ' <input type="number" class="sHalf" step="0.5" min="0" value="' + (f.half / 2) + '"> pt') +
+             '</div>' +
+           '</div>';
+    }
+    w.innerHTML = h;
+  }
+  function readSet() {
+    var rows = document.getElementById('fsetList').getElementsByClassName('fset');
+    for (var i = 0; i < rows.length; i++) {
+      var idx = parseInt(rows[i].getAttribute('data-i'), 10), f = S.fish[idx];
+      if (!f) continue;
+      var nm = rows[i].getElementsByClassName('sName')[0].value;
+      if (nm && nm.replace(/^\s+|\s+$/g, '')) f.name = nm.replace(/^\s+|\s+$/g, '');
+      if (!f.custom) {
+        var full = parseFloat(rows[i].getElementsByClassName('sFull')[0].value);
+        if (!isNaN(full) && full >= 0) f.p2 = Math.round(full * 2);
+        var has = rows[i].getElementsByClassName('sHasHalf')[0].checked;
+        var hv = parseFloat(rows[i].getElementsByClassName('sHalf')[0].value);
+        f.half = has ? (isNaN(hv) ? Math.round(f.p2 / 2) : Math.round(hv * 2)) : 0;
+      }
+    }
+  }
+  document.getElementById('fsetList').addEventListener('click', function (e) {
+    if (!e.target.getAttribute) return;
+    var i = e.target.getAttribute('data-rm');
+    if (i === null) return;
+    if (!confirm('この魚を一覧から削除しますか？')) return;
+    readSet();
+    S.fish.splice(parseInt(i, 10), 1);
+    renderSet(); save();
+  });
+  document.getElementById('btnAddFish').onclick = function () {
+    readSet();
+    S.fish.push({ id: 'f' + (new Date()).getTime(), name: '新しい魚', p2: 2, half: 0 });
+    renderSet();
+  };
+  document.getElementById('btnDefault').onclick = function () {
+    if (!confirm('魚とポイントを初期状態に戻しますか？')) return;
+    S.fish = defFish(); renderSet(); save();
+  };
+  document.getElementById('btnSetOk').onclick = function () { readSet(); closeM('mSet'); render(); };
+
+  /* ================= モーダル共通 ================= */
+  function openM(id) { document.getElementById(id).className = 'mask on'; }
+  function closeM(id) { document.getElementById(id).className = 'mask'; }
+  var cl = document.querySelectorAll('[data-close]');
+  for (var ci = 0; ci < cl.length; ci++) {
+    (function (el) { el.onclick = function () { closeM(el.getAttribute('data-close')); }; })(cl[ci]);
+  }
+
+  load();
+  render();
+})();
+</script>
 </body>
 </html>
