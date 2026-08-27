@@ -172,7 +172,7 @@
 <div class="mask" id="mCook">
   <div class="modal">
     <h2 id="ckTitle">タイ</h2>
-    <p class="hint">調理法をタップしてください。<br><b>2つ選ぶと、半分ずつ2種類</b>の調理になります。</p>
+    <p class="hint" id="ckHint">調理法をタップしてください。</p>
     <div class="chips" id="ckList"></div>
     <div class="preview" id="ckPrev">調理法を選んでください</div>
     <div class="row">
@@ -208,24 +208,27 @@
     <div class="note">
       調理法は「、」（読点）で区切ります。<br>
       うしろに <b>◎</b> … おすすめ表示　　うしろに <b>＋</b> … 追加料金あり<br>
-      例）刺身◎、塩焼き、フライ◎＋
+      例）刺身◎、塩焼き、フライ◎＋<br>
+      「半分ずつ2種類の調理ができる」は<b>タイ・ヒラメ・シマアジのみ</b>チェックが入っています。
     </div>
     <div id="fsetList"></div>
     <div class="row"><button id="btnAddFish">＋ 魚を追加</button></div>
     <div class="row"><button id="btnDefault" style="background:#eef4f8">初期値に戻す</button></div>
     <div class="row"><button class="ok" id="btnSetOk">保存して閉じる</button></div>
-    <div class="ver">釣りポイント計算 お客様用 v5.1</div>
+    <div class="ver">釣りポイント計算 お客様用 v6.0</div>
   </div>
 </div>
 
 <script>
 (function () {
-  var KEY = 'zauo_fish_points_guest_v5';
+  var KEY = 'zauo_fish_points_guest_v6';
 
   /*
     調理法は魚種別説明ページ（../魚種別説明ページ/）の内容に合わせている。
     末尾の記号 … ◎＝おすすめ（説明ページで◎評価） ／ ＋＝追加料金あり
-    cook = 調理法（1つ選ぶ＝丸ごと／2つ選ぶ＝半分ずつ）
+    cook = 調理法
+    halfok = 半身ずつ2種類の調理ができる魚（2026-08-27 クライアント指定：タイ・ヒラメ・シマアジのみ）
+             true なら調理法を2つまで選べる／false なら1つだけ
     骨・頭を使う料理（骨せんべい・みそ汁・あら炊き・兜焼き）は載せない方針（2026-08-27）
     ここは「釣った魚を何の調理で頼んだか」の確認が目的のため、身の調理だけを並べる
   */
@@ -234,9 +237,9 @@
       { id: 'f1', name: 'サザエ',   p2: 2,  cook: ['刺身', 'つぼ焼き'] },
       { id: 'f2', name: '車海老',   p2: 2,  cook: ['刺身◎', '塩焼き', 'フライ◎＋'] },
       { id: 'f3', name: 'アジ',     p2: 4,  cook: ['タタキ◎', '刺身', '塩焼き', '唐揚げ', 'フライ◎＋', '煮付け'] },
-      { id: 'f4', name: 'タイ',     p2: 14, cook: ['刺身◎', '焼き', '煮付け', '唐揚げ'] },
-      { id: 'f5', name: 'ヒラメ',   p2: 16, cook: ['刺身◎', '煮付け', '唐揚げ', 'フライ＋', 'バターソテー＋'] },
-      { id: 'f6', name: 'シマアジ', p2: 24, cook: ['刺身◎', '焼き', '煮付け', '唐揚げ'] },
+      { id: 'f4', name: 'タイ',     p2: 14, halfok: true, cook: ['刺身◎', '焼き', '煮付け', '唐揚げ'] },
+      { id: 'f5', name: 'ヒラメ',   p2: 16, halfok: true, cook: ['刺身◎', '煮付け', '唐揚げ', 'フライ＋', 'バターソテー＋'] },
+      { id: 'f6', name: 'シマアジ', p2: 24, halfok: true, cook: ['刺身◎', '焼き', '煮付け', '唐揚げ'] },
       { id: 'f7', name: '伊勢海老', p2: 0,  custom: true, cook: ['刺身◎', '塩焼き', 'マヨネーズ焼き'] }
     ];
   }
@@ -347,12 +350,15 @@
   }
   function mainLabel() {
     if (ckMain.length === 0) return '';
-    if (ckMain.length === 1) return '丸ごと' + ckMain[0];
+    if (ckMain.length === 1) return (ckFish && ckFish.halfok) ? '丸ごと' + ckMain[0] : ckMain[0];
     return ckMain[0] + 'と' + ckMain[1];
   }
   function openCook(f) {
     ckFish = f; ckMain = [];
     document.getElementById('ckTitle').textContent = f.name + (f.custom ? '' : '　' + fmt(f.p2) + 'pt');
+    document.getElementById('ckHint').innerHTML = f.halfok
+      ? '調理法をタップしてください。<br><b>2つ選ぶと、半分ずつ2種類</b>の調理になります。'
+      : '調理法をタップしてください。';
     renderChips();
     openM('mCook');
   }
@@ -377,7 +383,7 @@
       pv.innerHTML = '<span style="color:#8ba0af;font-weight:600">調理法を選んでください</span>';
     } else {
       pv.innerHTML = esc(ckFish.name) + '（' + esc(main) + '）' +
-        (ckMain.length === 1 ? '<small>もう1つ選ぶと、半分ずつ2種類にできます</small>' : '') +
+        ((ckFish.halfok && ckMain.length === 1) ? '<small>もう1つ選ぶと、半分ずつ2種類にできます</small>' : '') +
         (ckMain.length === 2 ? '<small>半分ずつ2種類の調理</small>' : '');
     }
     document.getElementById('ckOk').disabled = (ckMain.length === 0);
@@ -389,7 +395,8 @@
     if (i >= 0) ckMain.splice(i, 1);
     else {
       ckMain.push(n);
-      if (ckMain.length > 2) ckMain.shift(); /* 3つ目を選んだら古いほうを外す */
+      var max = (ckFish && ckFish.halfok) ? 2 : 1;
+      while (ckMain.length > max) ckMain.shift(); /* 上限を超えたら古いほうを外す */
     }
     renderChips();
   });
@@ -487,6 +494,8 @@
              '</div>' +
              '<div class="l2"><label>調理法' + (f.custom ? '　※ポイントは手入力' : '') + '</label>' +
                '<input type="text" class="sCook" value="' + esc((f.cook || []).join('、')) + '"></div>' +
+             '<div class="l2"><label style="color:#48606f"><input type="checkbox" class="sHalf"' +
+               (f.halfok ? ' checked' : '') + '> 半分ずつ2種類の調理ができる</label></div>' +
            '</div>';
     }
     w.innerHTML = h;
@@ -511,6 +520,8 @@
         if (!isNaN(full) && full >= 0) f.p2 = Math.round(full * 2);
       }
       f.cook = splitList(rows[i].getElementsByClassName('sCook')[0].value);
+      if (rows[i].getElementsByClassName('sHalf')[0].checked) f.halfok = true;
+      else delete f.halfok;
     }
   }
   document.getElementById('fsetList').addEventListener('click', function (e) {
