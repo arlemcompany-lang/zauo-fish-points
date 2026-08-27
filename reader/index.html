@@ -128,18 +128,20 @@
     <div id="ticketList"></div>
   </div>
 
-  <div class="card alert hide" id="paidCard">
-    <h2>⚠ 料金がついている魚があります</h2>
-    <div id="paidList"></div>
-    <div class="why">
-      本来チケットで釣れる魚に料金がついている可能性があります。<br>
-      <b>お客様が単品で追加注文した場合は正しい計上です。</b>
-      伝票を見て確かめてください。
-    </div>
+  <div class="card hide" id="fishPaidCard">
+    <h2 id="fishPaidTtl"></h2>
+    <div id="fishPaidList"></div>
+    <div class="why" id="fishPaidWhy"></div>
+  </div>
+
+  <div class="card hide" id="drinkCard">
+    <h2 id="drinkTtl"></h2>
+    <div id="drinkList"></div>
+    <div class="why" id="drinkWhy"></div>
   </div>
 
   <div class="card">
-    <button class="foldbtn" id="btnFold">▶ 魚以外の明細を見る（<span id="otherCount">0</span>件）</button>
+    <button class="foldbtn" id="btnFold">▶ その他の明細を見る（<span id="otherCount">0</span>件）</button>
     <div id="otherList" class="hide"></div>
   </div>
 
@@ -320,50 +322,93 @@
     post({ action: 'commit', result: result }, function (res) {
       busy(false);
       if (!res || !res.ok) { errBox('resultErr', (res && res.error) || '登録に失敗しました'); return; }
-      $('doneSub').textContent = 'チケット合計 ' + result.合計 + ' 枚';
+      $('doneSub').textContent = 'チケット合計 ' + result['合計'] + ' 枚';
       show('done');
     });
   }
 
   /* ================= 結果表示 ================= */
   function renderResult() {
-    var t = result.チケット || [], p = result.有料 || [], o = result.その他 || [], i, r, h;
+    var t = result['チケット'] || [];
+    var pf = result['有料の魚'] || [];
+    var pd = result['有料ドリンク'] || [];
+    var fd = result['飲み放題ドリンク'] || [];
+    var o = result['その他'] || [];
+    var i, r, h;
 
-    $('totalNum').innerHTML = result.合計 + '<span class="u">枚</span>';
-    $('totalSub').textContent = t.length + '匹　／　写真 ' + (result.枚数 || shots.length) + '枚' +
-      (result.重複除去 ? '（重なり ' + result.重複除去 + '行を除きました）' : '');
+    $('totalNum').innerHTML = result['合計'] + '<span class="u">枚</span>';
+    $('totalSub').textContent = t.length + '匹　／　写真 ' + (result['枚数'] || shots.length) + '枚' +
+      (result['重複除去'] ? '（重なり ' + result['重複除去'] + '行を除きました）' : '');
 
     h = '';
     for (i = 0; i < t.length; i++) {
       r = t[i];
-      h += '<div class="line' + (r.確信度 === '低' ? ' low' : '') + '">' +
-             '<div class="t">' + esc(r.魚) + (r.数量 > 1 ? ' ×' + r.数量 : '') +
-               '<small>' + esc(r.品名) + '</small></div>' +
-             '<div class="p">' + r.小計 + '枚</div>' +
+      h += '<div class="line' + (r['確信度'] === '低' ? ' low' : '') + '">' +
+             '<div class="t">' + esc(r['魚']) + (r['数量'] > 1 ? ' ×' + r['数量'] : '') +
+               '<small>' + esc(r['品名']) + '</small></div>' +
+             '<div class="p">' + r['小計'] + '枚</div>' +
              '<button class="rm" data-rmt="' + i + '">×</button>' +
            '</div>';
     }
     $('ticketList').innerHTML = h || '<div class="line"><div class="t" style="color:#8ba0af">チケットの魚は見つかりませんでした</div></div>';
 
-    if (p.length) {
-      $('paidCard').className = 'card alert';
+    // ---- 料金がついている魚 ----
+    if (pf.length) {
+      var fMix = result['魚が混在'];
+      $('fishPaidCard').className = fMix ? 'card alert' : 'card';
+      $('fishPaidTtl').textContent = fMix
+        ? '⚠ 料金がついている魚があります'
+        : '単品（有料）で注文された魚';
       h = '';
-      for (i = 0; i < p.length; i++) {
-        r = p[i];
-        h += '<div class="line"><div class="t">' + esc(r.魚) + (r.数量 > 1 ? ' ×' + r.数量 : '') +
-               '<small>' + esc(r.品名) + '</small></div>' +
-             '<div class="p">' + r.金額 + '円</div></div>';
+      for (i = 0; i < pf.length; i++) {
+        r = pf[i];
+        h += '<div class="line"><div class="t">' + esc(r['魚']) + (r['数量'] > 1 ? ' ×' + r['数量'] : '') +
+               '<small>' + esc(r['品名']) + '</small></div>' +
+             '<div class="p">' + (r['金額'] === null ? '金額不明' : r['金額'] + '円') + '</div></div>';
       }
-      $('paidList').innerHTML = h;
+      $('fishPaidList').innerHTML = h;
+      $('fishPaidWhy').innerHTML = fMix
+        ? 'チケットの魚と有料の魚が混ざっています。<br>' +
+          '<b>お客様が単品で追加注文した場合は正しい計上です。</b>伝票を見て確かめてください。'
+        : 'チケットの魚がないので、単品での注文と思われます。';
     } else {
-      $('paidCard').className = 'card alert hide';
+      $('fishPaidCard').className = 'card hide';
+    }
+
+    // ---- ドリンク ----
+    if (pd.length || fd.length) {
+      var dMix = result['ドリンクが混在'];
+      $('drinkCard').className = dMix ? 'card alert' : 'card';
+      $('drinkTtl').textContent = dMix
+        ? '⚠ 飲み放題と有料ドリンクが混ざっています'
+        : (pd.length ? '有料のドリンク' : '飲み放題のドリンク');
+      h = '';
+      if (fd.length) {
+        var cups = 0;
+        for (i = 0; i < fd.length; i++) cups += (fd[i]['数量'] || 1);
+        h += '<div class="line"><div class="t">飲み放題のドリンク<small>' +
+             fd.length + '種類</small></div><div class="p">' + cups + '杯</div></div>';
+      }
+      for (i = 0; i < pd.length; i++) {
+        r = pd[i];
+        h += '<div class="line"><div class="t">' + esc(r['品名']) + (r['数量'] > 1 ? ' ×' + r['数量'] : '') +
+             '<small>有料</small></div>' +
+             '<div class="p">' + (r['金額'] === null ? '金額不明' : r['金額'] + '円') + '</div></div>';
+      }
+      $('drinkList').innerHTML = h;
+      $('drinkWhy').innerHTML = dMix
+        ? '飲み放題（0円）と、料金のついたドリンクの両方があります。<br>' +
+          '<b>飲み放題に含まれないドリンクを頼まれた場合は正しい計上です。</b>伝票を見て確かめてください。'
+        : '';
+    } else {
+      $('drinkCard').className = 'card hide';
     }
 
     $('otherCount').textContent = o.length;
     h = '';
     for (i = 0; i < o.length; i++) {
-      h += '<div class="line"><div class="t">' + esc(o[i].品名) + '</div>' +
-           '<div class="p" style="color:#8ba0af">' + (o[i].金額 || 0) + '円</div></div>';
+      h += '<div class="line"><div class="t">' + esc(o[i]['品名']) + '</div>' +
+           '<div class="p" style="color:#8ba0af">' + (o[i]['金額'] || 0) + '円</div></div>';
     }
     $('otherList').innerHTML = h || '<div class="line"><div class="t" style="color:#8ba0af">ありません</div></div>';
   }
@@ -371,16 +416,16 @@
   $('ticketList').addEventListener('click', function (e) {
     var i = e.target.getAttribute && e.target.getAttribute('data-rmt');
     if (i === null || i === undefined) return;
-    var r = result.チケット.splice(parseInt(i, 10), 1)[0];
-    result.合計 -= r.小計;
+    var r = result['チケット'].splice(parseInt(i, 10), 1)[0];
+    result['合計'] -= r['小計'];
     renderResult();
   });
 
   $('btnFold').onclick = function () {
     var el = $('otherList'), open = el.className.indexOf('hide') < 0;
     el.className = open ? 'hide' : '';
-    $('btnFold').innerHTML = (open ? '▶' : '▼') + ' 魚以外の明細を見る（<span id="otherCount">' +
-      ((result.その他 || []).length) + '</span>件）';
+    $('btnFold').innerHTML = (open ? '▶' : '▼') + ' その他の明細を見る（<span id="otherCount">' +
+      ((result['その他'] || []).length) + '</span>件）';
   };
 
   /* ================= 手入力モード ================= */
@@ -449,7 +494,11 @@
         tot += manual[i].pt;
         list.push({ 魚: manual[i].name, 品名: '（手入力）', 数量: 1, 小計: manual[i].pt, 確信度: '高' });
       }
-      result = { ok: true, 合計: tot, チケット: list, 有料: [], その他: [], 枚数: 0, 手入力: true };
+      result = {
+        ok: true, 合計: tot, チケット: list,
+        有料の魚: [], 有料ドリンク: [], 飲み放題ドリンク: [], その他: [],
+        魚が混在: false, ドリンクが混在: false, 枚数: 0, 手入力: true
+      };
       renderResult();
       show('result');
     };
