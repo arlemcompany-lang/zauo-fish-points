@@ -18,21 +18,13 @@
   button { font-family: inherit; border: none; cursor: pointer; }
 
   /* ===== 見出し ===== */
-  .head {
-    background: #0b3c5d; color: #fff; padding: 14px 16px 16px; text-align: center;
-  }
+  .head { background: #0b3c5d; color: #fff; padding: 14px 16px 16px; text-align: center; }
   .head h1 { margin: 0; font-size: 22px; letter-spacing: .04em; }
   .head p { margin: 6px 0 0; font-size: 14px; opacity: .85; }
 
   /* ===== 所持ポイント入力 ===== */
-  .ownbox {
-    margin: -8px 12px 0; background: #fff; border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.1); overflow: hidden;
-  }
-  .ownbox button {
-    width: 100%; background: #fff; padding: 14px 16px; text-align: left;
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  }
+  .ownbox { margin: -8px 12px 0; background: #fff; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.1); overflow: hidden; }
+  .ownbox button { width: 100%; background: #fff; padding: 14px 16px; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .ownbox .l { font-size: 16px; font-weight: 700; color: #33566d; }
   .ownbox .l small { display: block; font-size: 12px; font-weight: 400; color: #8ba0af; margin-top: 3px; }
   .ownbox .v { font-size: 34px; font-weight: 800; color: #0b3c5d; white-space: nowrap; }
@@ -40,80 +32,67 @@
   .ownbox .v .tap { font-size: 15px; font-weight: 700; color: #fff; background: #1f7ab5; border-radius: 8px; padding: 8px 14px; }
 
   /* ===== 残ポイント ===== */
-  .board {
-    background: #fff; margin: 12px; border-radius: 16px; padding: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.1); text-align: center;
-  }
+  .board { background: #fff; margin: 12px; border-radius: 16px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.1); text-align: center; }
   .board .lbl { font-size: 15px; color: #5b7385; font-weight: 700; }
   .board .num { font-size: 68px; font-weight: 800; line-height: 1.05; color: #0b7a3b; margin-top: 4px; }
   .board .num .u { font-size: 22px; font-weight: 700; margin-left: 4px; }
   .board .sub { font-size: 14px; color: #7a8fa0; margin-top: 6px; }
   .board.short .num { color: #c62828; }
-  .board .callout {
-    display: none; margin-top: 12px; background: #fdecea; color: #b0392f;
-    border-radius: 10px; padding: 12px; font-size: 16px; font-weight: 700; line-height: 1.5;
-  }
+  .board .callout { display: none; margin-top: 12px; background: #fdecea; color: #b0392f; border-radius: 10px; padding: 12px; font-size: 16px; font-weight: 700; line-height: 1.5; }
   .board.short .callout { display: block; }
 
   /* ===== 魚ボタン ===== */
   .sect { font-size: 14px; color: #5b7385; font-weight: 700; margin: 0 14px 8px; }
-  .grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px; padding: 0 12px 12px;
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; padding: 0 12px 12px; }
+  .fish {
+    background: #fff; border-radius: 14px; box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    padding: 16px 10px; text-align: center;
   }
-  .card {
-    background: #fff; border-radius: 14px; overflow: hidden;
-    box-shadow: 0 2px 6px rgba(0,0,0,.08);
-  }
-  .card.over { opacity: .45; }
-  .card .nm {
-    padding: 9px 10px 7px; font-size: 21px; font-weight: 800; text-align: center;
-    border-bottom: 1px solid #e3ecf2;
-  }
-  .card .btns { display: flex; }
-  .card .btns button {
-    flex: 1; padding: 17px 6px; font-size: 19px; font-weight: 800; color: #fff;
-    background: #1f7ab5; border-right: 1px solid rgba(255,255,255,.3);
-  }
-  .card .btns button:last-child { border-right: none; }
-  .card .btns button.half { background: #46a2c9; }
-  .card .btns button.custom { background: #7a5ea8; font-size: 17px; }
-  .card .btns button:active { filter: brightness(.85); }
-  .card .btns button .pt { display: block; font-size: 14px; font-weight: 600; opacity: .95; }
+  .fish.over { opacity: .45; }
+  .fish .nm { font-size: 22px; font-weight: 800; }
+  .fish .pt { display: block; margin-top: 6px; font-size: 15px; font-weight: 700; color: #fff; background: #1f7ab5; border-radius: 999px; padding: 5px 0; }
+  .fish.cst .pt { background: #7a5ea8; font-size: 13px; }
+  .fish:active { filter: brightness(.94); }
 
   /* ===== 選んだ内訳 ===== */
   .listwrap { padding: 0 12px 96px; }
-  .item {
-    background: #fff; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px;
-    display: flex; align-items: center; gap: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.06);
-  }
+  .item { background: #fff; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
   .item .t { flex: 1; font-size: 19px; font-weight: 700; }
-  .item .p { font-size: 19px; font-weight: 800; color: #1f7ab5; }
+  .item .t small { display: block; font-size: 14px; font-weight: 600; color: #46789a; margin-top: 3px; }
+  .item .t small.non { color: #b58a2b; }
+  .item .p { font-size: 19px; font-weight: 800; color: #1f7ab5; white-space: nowrap; }
   .item .del { background: #f2f5f7; color: #b0392f; font-size: 20px; font-weight: 800; border-radius: 10px; padding: 8px 16px; }
   .empty { color: #8ba0af; text-align: center; padding: 20px 0; font-size: 15px; line-height: 1.6; }
 
   /* ===== 下部バー ===== */
-  .bottom {
-    position: fixed; left: 0; right: 0; bottom: 0; display: flex; gap: 8px;
-    padding: 8px; background: rgba(238,244,248,.96); border-top: 1px solid #d6e2ea;
-  }
-  .bottom button {
-    flex: 1; padding: 16px 4px; font-size: 17px; font-weight: 800; border-radius: 12px;
-    background: #fff; color: #14212b; box-shadow: 0 1px 4px rgba(0,0,0,.1);
-  }
+  .bottom { position: fixed; left: 0; right: 0; bottom: 0; display: flex; gap: 8px; padding: 8px; background: rgba(238,244,248,.96); border-top: 1px solid #d6e2ea; }
+  .bottom button { flex: 1; padding: 16px 4px; font-size: 17px; font-weight: 800; border-radius: 12px; background: #fff; color: #14212b; box-shadow: 0 1px 4px rgba(0,0,0,.1); }
   .bottom button.main { background: #0b3c5d; color: #fff; }
 
   /* ===== モーダル ===== */
-  .mask {
-    position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5);
-    display: none; align-items: center; justify-content: center; padding: 12px; z-index: 50;
-  }
+  .mask { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5); display: none; align-items: center; justify-content: center; padding: 12px; z-index: 50; }
   .mask.on { display: flex; }
   .modal { background: #fff; border-radius: 16px; width: 100%; max-width: 460px; max-height: 92%; overflow: auto; padding: 16px; }
-  .modal h2 { margin: 0 0 12px; font-size: 20px; }
+  .modal h2 { margin: 0 0 4px; font-size: 22px; }
+  .modal .hint { margin: 0 0 12px; font-size: 14px; color: #5b7385; line-height: 1.6; }
   .modal .row { display: flex; gap: 8px; margin-top: 10px; }
   .modal .row button { flex: 1; padding: 14px; font-size: 18px; font-weight: 800; border-radius: 12px; background: #eef4f8; }
   .modal .row button.ok { background: #0b3c5d; color: #fff; }
+  .modal .row button.ok[disabled] { background: #c3d2dc; }
+
+  /* 調理法チップ */
+  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+  .chips button {
+    padding: 16px 6px; font-size: 17px; font-weight: 700; border-radius: 12px;
+    background: #eef4f8; color: #14212b; border: 2px solid #eef4f8;
+  }
+  .chips button.sel { background: #1f7ab5; border-color: #0b3c5d; color: #fff; }
+  .chips button.sel:before { content: "✓ "; }
+  .preview {
+    margin-top: 12px; background: #f2f7fa; border-radius: 12px; padding: 12px;
+    text-align: center; font-size: 19px; font-weight: 800; color: #0b3c5d; min-height: 54px;
+  }
+  .preview small { display: block; font-size: 13px; font-weight: 600; color: #7a8fa0; margin-top: 4px; }
 
   .disp { font-size: 44px; font-weight: 800; text-align: right; padding: 10px 14px; background: #f2f7fa; border-radius: 12px; min-height: 64px; }
   .pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
@@ -122,9 +101,11 @@
 
   .fset { border: 1px solid #dbe6ee; border-radius: 12px; padding: 10px; margin-bottom: 8px; }
   .fset .l1 { display: flex; gap: 6px; align-items: center; }
-  .fset input[type=text] { flex: 1; font-size: 18px; padding: 8px; border: 1px solid #cbd8e2; border-radius: 8px; min-width: 0; }
-  .fset input[type=number] { width: 76px; font-size: 18px; padding: 8px; border: 1px solid #cbd8e2; border-radius: 8px; }
-  .fset .l2 { margin-top: 8px; font-size: 15px; color: #48606f; display: flex; align-items: center; gap: 8px; }
+  .fset input[type=text] { flex: 1; font-size: 17px; padding: 8px; border: 1px solid #cbd8e2; border-radius: 8px; min-width: 0; }
+  .fset input[type=number] { width: 76px; font-size: 17px; padding: 8px; border: 1px solid #cbd8e2; border-radius: 8px; }
+  .fset .l2 { margin-top: 8px; }
+  .fset .l2 label { display: block; font-size: 13px; color: #7a8fa0; margin-bottom: 4px; }
+  .fset .l2 input { width: 100%; }
   .fset .rm { background: #f7e9e7; color: #b0392f; border-radius: 8px; padding: 8px 12px; font-size: 16px; font-weight: 700; }
   .note { background: #fff8e1; border-left: 4px solid #ffb300; padding: 10px; font-size: 14px; border-radius: 6px; margin: 10px 0; line-height: 1.6; }
   .ver { text-align: center; color: #9db1bf; font-size: 12px; padding: 6px 0 14px; }
@@ -140,15 +121,17 @@
     .board .num { font-size: 56px; }
     .board .callout { font-size: 15px; }
     .sect { margin: 0 10px 8px; }
-    .grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 8px; padding: 0 8px 10px; }
-    .card .nm { font-size: 18px; }
-    .card .btns button { font-size: 16px; padding: 14px 2px; }
-    .card .btns button.custom { font-size: 14px; }
-    .card .btns button .pt { font-size: 13px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 8px; padding: 0 8px 10px; }
+    .fish { padding: 13px 6px; }
+    .fish .nm { font-size: 18px; }
+    .fish .pt { font-size: 13px; }
     .listwrap { padding: 0 8px 88px; }
     .item .t, .item .p { font-size: 17px; }
     .bottom { gap: 6px; padding: 6px; }
     .bottom button { font-size: 15px; padding: 14px 2px; }
+    .chips { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
+    .chips button { font-size: 15px; padding: 14px 4px; }
+    .preview { font-size: 17px; }
     .disp { font-size: 36px; }
     .pad button { padding: 16px 0; font-size: 24px; }
   }
@@ -158,7 +141,7 @@
 
 <div class="head">
   <h1 id="ttl">釣りポイント計算</h1>
-  <p>釣りたいお魚を選ぶと、残りのポイントがわかります</p>
+  <p>釣りたいお魚と調理法を選ぶと、残りのポイントがわかります</p>
 </div>
 
 <div class="ownbox">
@@ -179,13 +162,28 @@
 <div class="grid" id="grid"></div>
 
 <div class="listwrap">
-  <div class="sect" style="margin-left:2px">選んだお魚</div>
+  <div class="sect" style="margin-left:2px">選んだお魚と調理法</div>
   <div id="items"></div>
 </div>
 
 <div class="bottom">
   <button id="btnUndo">1つ取消</button>
   <button class="main" id="btnReset">最初から</button>
+</div>
+
+<!-- 調理法えらび -->
+<div class="mask" id="mCook">
+  <div class="modal">
+    <h2 id="ckTitle">タイ</h2>
+    <p class="hint">調理法をタップしてください。<br><b>2つ選ぶと、半分ずつ2種類</b>の調理になります。</p>
+    <div class="chips" id="ckList"></div>
+    <div class="preview" id="ckPrev">調理法を選んでください</div>
+    <div class="row">
+      <button data-close="mCook">やめる</button>
+      <button id="ckSkip">あとで決める</button>
+    </div>
+    <div class="row"><button class="ok" id="ckOk" disabled>これにする</button></div>
+  </div>
 </div>
 
 <!-- テンキー -->
@@ -209,32 +207,33 @@
 <!-- 設定（スタッフ用・タイトル5回タップで開く） -->
 <div class="mask" id="mSet">
   <div class="modal">
-    <h2>スタッフ設定（魚とポイント）</h2>
+    <h2>スタッフ設定</h2>
     <div class="note">
-      ★タイの半身は <b>3.5pt（仮）</b> です。<br>
-      正式な枚数が決まったら「タイ」の半身の数字を書き換えて保存してください。
+      調理法は「、」（読点）で区切って入力してください。<br>
+      例）刺身、炙り、カルパッチョ、塩焼き、煮付け
     </div>
     <div id="fsetList"></div>
     <div class="row"><button id="btnAddFish">＋ 魚を追加</button></div>
-    <div class="row"><button id="btnDefault" style="background:#eef4f8">魚を初期値に戻す</button></div>
+    <div class="row"><button id="btnDefault" style="background:#eef4f8">初期値に戻す</button></div>
     <div class="row"><button class="ok" id="btnSetOk">保存して閉じる</button></div>
-    <div class="ver">釣りポイント計算 お客様用 v2.0</div>
+    <div class="ver">釣りポイント計算 お客様用 v3.0</div>
   </div>
 </div>
 
 <script>
 (function () {
-  var KEY = 'zauo_fish_points_guest_v2';
+  var KEY = 'zauo_fish_points_guest_v3';
 
+  /* 調理法は店舗の説明表に合わせて設定画面から変更できます（初期値は暫定） */
   function defFish() {
     return [
-      { id: 'f1', name: 'サザエ',   p2: 2,  half: 0 },
-      { id: 'f2', name: '車海老',   p2: 2,  half: 0 },
-      { id: 'f3', name: 'アジ',     p2: 4,  half: 0 },
-      { id: 'f4', name: 'タイ',     p2: 14, half: 7 },
-      { id: 'f5', name: 'ヒラメ',   p2: 16, half: 8 },
-      { id: 'f6', name: 'シマアジ', p2: 24, half: 12 },
-      { id: 'f7', name: '伊勢海老', p2: 0,  half: 0, custom: true }
+      { id: 'f1', name: 'サザエ',   p2: 2,  cook: ['刺身', 'つぼ焼き'] },
+      { id: 'f2', name: '車海老',   p2: 2,  cook: ['刺身', '塩焼き', '唐揚げ', '寿司'] },
+      { id: 'f3', name: 'アジ',     p2: 4,  cook: ['活き造り', '唐揚げ', 'なめろう', '塩焼き'] },
+      { id: 'f4', name: 'タイ',     p2: 14, cook: ['刺身', '炙り', 'カルパッチョ', '塩焼き', 'バジル焼き', '煮付け', '酒蒸し', 'バターソテー'] },
+      { id: 'f5', name: 'ヒラメ',   p2: 16, cook: ['刺身', '炙り', 'カルパッチョ', '塩焼き', '煮付け', 'バターソテー'] },
+      { id: 'f6', name: 'シマアジ', p2: 24, cook: ['刺身', '炙り', 'カルパッチョ', '塩焼き', '煮付け'] },
+      { id: 'f7', name: '伊勢海老', p2: 0,  custom: true, cook: ['活き造り', 'スチーム', '具足煮', '味噌汁'] }
     ];
   }
 
@@ -250,7 +249,7 @@
   }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 
-  /* ポイントは内部で「×2の整数」で保持（3.5pt を誤差なく扱うため） */
+  /* ポイントは内部で「×2の整数」で保持（0.5刻みを誤差なく扱うため） */
   function fmt(p2) {
     var v = p2 / 2;
     return (v % 1 === 0) ? String(v) : v.toFixed(1);
@@ -274,10 +273,7 @@
 
     document.getElementById('num').innerHTML = fmt(rest) + '<span class="u">pt</span>';
 
-    var board = document.getElementById('board'),
-        sub = document.getElementById('sub'),
-        callout = document.getElementById('callout');
-
+    var board = document.getElementById('board'), callout = document.getElementById('callout');
     if (rest < 0) {
       board.className = 'board short';
       callout.innerHTML = 'ポイントが ' + fmt(-rest) + 'pt 足りません<br>' +
@@ -285,8 +281,8 @@
     } else {
       board.className = 'board';
     }
-    sub.textContent = S.items.length
-      ? '選んだお魚 ' + S.items.length + '点 ／ 使用 ' + fmt(u) + 'pt'
+    document.getElementById('sub').textContent = S.items.length
+      ? '選んだお魚 ' + S.items.length + '匹 ／ 使用 ' + fmt(u) + 'pt'
       : (S.owned2 > 0 ? 'お魚を選んでみましょう' : 'まずはお持ちのポイントを入れてください');
 
     renderGrid(rest);
@@ -295,60 +291,105 @@
   }
 
   function renderGrid(rest) {
-    var g = document.getElementById('grid'), h = '', i, f, cheapest;
+    var g = document.getElementById('grid'), h = '', i, f;
     for (i = 0; i < S.fish.length; i++) {
       f = S.fish[i];
-      cheapest = f.custom ? 0 : (f.half > 0 ? f.half : f.p2);
-      h += '<div class="card' + (!f.custom && cheapest > rest ? ' over' : '') + '">' +
-             '<div class="nm">' + esc(f.name) + '</div><div class="btns">';
-      if (f.custom) {
-        h += '<button class="custom" data-add="' + f.id + '" data-kind="custom">ポイントを入力<span class="pt">大きさで変わります</span></button>';
-      } else {
-        h += '<button data-add="' + f.id + '" data-kind="full">まるごと<span class="pt">' + fmt(f.p2) + ' pt</span></button>';
-        if (f.half > 0) {
-          h += '<button class="half" data-add="' + f.id + '" data-kind="half">半身<span class="pt">' + fmt(f.half) + ' pt</span></button>';
-        }
-      }
-      h += '</div></div>';
+      h += '<button class="fish' + (f.custom ? ' cst' : (f.p2 > rest ? ' over' : '')) + '" data-add="' + f.id + '">' +
+             '<span class="nm">' + esc(f.name) + '</span>' +
+             '<span class="pt">' + (f.custom ? '大きさで変わります' : fmt(f.p2) + ' pt') + '</span>' +
+           '</button>';
     }
     g.innerHTML = h;
   }
 
   function renderItems() {
-    var w = document.getElementById('items'), h = '', i;
+    var w = document.getElementById('items'), h = '', i, it;
     if (!S.items.length) {
       w.innerHTML = '<div class="empty">まだ選んでいません。<br>上のお魚をタップしてください。</div>';
       return;
     }
     for (i = S.items.length - 1; i >= 0; i--) {
-      h += '<div class="item"><div class="t">' + esc(S.items[i].label) + '</div>' +
-           '<div class="p">' + fmt(S.items[i].p2) + ' pt</div>' +
+      it = S.items[i];
+      h += '<div class="item"><div class="t">' + esc(it.name) +
+             (it.cook
+               ? '<small>' + esc(it.cook) + '</small>'
+               : '<small class="non">調理法はあとで</small>') +
+           '</div>' +
+           '<div class="p">' + fmt(it.p2) + ' pt</div>' +
            '<button class="del" data-del="' + i + '">×</button></div>';
     }
     w.innerHTML = h;
   }
 
-  /* ================= 追加・削除 ================= */
+  /* ================= 調理法えらび ================= */
+  var ckFish = null, ckSel = [];
+
   function findFish(id) {
     for (var i = 0; i < S.fish.length; i++) if (S.fish[i].id === id) return S.fish[i];
     return null;
   }
-  function addItem(id, kind) {
-    var f = findFish(id);
-    if (!f) return;
-    if (kind === 'custom') {
+  function cookLabel() {
+    if (ckSel.length === 0) return '';
+    if (ckSel.length === 1) return '丸ごと' + ckSel[0];
+    return ckSel[0] + 'と' + ckSel[1];
+  }
+  function openCook(f) {
+    ckFish = f; ckSel = [];
+    document.getElementById('ckTitle').textContent =
+      f.name + (f.custom ? '' : '　' + fmt(f.p2) + 'pt');
+    renderChips();
+    openM('mCook');
+  }
+  function renderChips() {
+    var w = document.getElementById('ckList'), h = '', i, c, list = ckFish.cook || [];
+    for (i = 0; i < list.length; i++) {
+      c = list[i];
+      h += '<button data-c="' + esc(c) + '"' + (indexOfSel(c) >= 0 ? ' class="sel"' : '') + '>' + esc(c) + '</button>';
+    }
+    w.innerHTML = h || '<div class="empty">調理法が登録されていません</div>';
+
+    var pv = document.getElementById('ckPrev');
+    if (ckSel.length === 0) {
+      pv.innerHTML = '<span style="color:#8ba0af;font-weight:600">調理法を選んでください</span>';
+    } else if (ckSel.length === 1) {
+      pv.innerHTML = esc(ckFish.name) + '（丸ごと' + esc(ckSel[0]) + '）<small>もう1つ選ぶと、半分ずつ2種類にできます</small>';
+    } else {
+      pv.innerHTML = esc(ckFish.name) + '（' + esc(ckSel[0]) + 'と' + esc(ckSel[1]) + '）<small>半分ずつ2種類の調理</small>';
+    }
+    document.getElementById('ckOk').disabled = (ckSel.length === 0);
+  }
+  function indexOfSel(c) {
+    for (var i = 0; i < ckSel.length; i++) if (ckSel[i] === c) return i;
+    return -1;
+  }
+  document.getElementById('ckList').addEventListener('click', function (e) {
+    var c = e.target.getAttribute && e.target.getAttribute('data-c');
+    if (!c) return;
+    var i = indexOfSel(c);
+    if (i >= 0) ckSel.splice(i, 1);
+    else {
+      ckSel.push(c);
+      if (ckSel.length > 2) ckSel.shift(); /* 3つ目を選んだら古いほうを外す */
+    }
+    renderChips();
+  });
+  function pushFish(cookText) {
+    var f = ckFish;
+    closeM('mCook');
+    if (f.custom) {
       keypad(f.name + ' のポイント', 0, function (p2) {
         if (p2 <= 0) return;
-        S.items.push({ label: f.name, p2: p2 });
+        S.items.push({ name: f.name, cook: cookText, p2: p2 });
         render();
       });
       return;
     }
-    var p2 = (kind === 'half') ? f.half : f.p2;
-    if (p2 <= 0) return;
-    S.items.push({ label: f.name + (kind === 'half' ? '（半身）' : ''), p2: p2 });
+    S.items.push({ name: f.name, cook: cookText, p2: f.p2 });
     render();
   }
+  document.getElementById('ckOk').onclick = function () { pushFish(cookLabel()); };
+  document.getElementById('ckSkip').onclick = function () { pushFish(''); };
+
   function closestAttr(el, root, attr) {
     while (el && el !== root) {
       if (el.getAttribute && el.getAttribute(attr) !== null) return el;
@@ -356,10 +397,11 @@
     }
     return null;
   }
-
   document.getElementById('grid').addEventListener('click', function (e) {
     var b = closestAttr(e.target, this, 'data-add');
-    if (b) addItem(b.getAttribute('data-add'), b.getAttribute('data-kind'));
+    if (!b) return;
+    var f = findFish(b.getAttribute('data-add'));
+    if (f) openCook(f);
   });
   document.getElementById('items').addEventListener('click', function (e) {
     var b = closestAttr(e.target, this, 'data-del');
@@ -423,30 +465,30 @@
                '<input type="number" class="sFull" step="0.5" min="0" value="' + (f.custom ? '' : (f.p2 / 2)) + '"' + (f.custom ? ' disabled' : '') + '> pt' +
                '<button class="rm" data-rm="' + i + '">削除</button>' +
              '</div>' +
-             '<div class="l2">' +
-               (f.custom
-                 ? 'その場でポイントを手入力する魚（伊勢海老など）'
-                 : '<label><input type="checkbox" class="sHasHalf"' + (f.half > 0 ? ' checked' : '') + '> 半身あり</label>' +
-                   ' <input type="number" class="sHalf" step="0.5" min="0" value="' + (f.half / 2) + '"> pt') +
-             '</div>' +
+             '<div class="l2"><label>調理法（、で区切る）' +
+               (f.custom ? '　※ポイントはその場で手入力' : '') + '</label>' +
+               '<input type="text" class="sCook" value="' + esc((f.cook || []).join('、')) + '"></div>' +
            '</div>';
     }
     w.innerHTML = h;
   }
   function readSet() {
-    var rows = document.getElementById('fsetList').getElementsByClassName('fset');
-    for (var i = 0; i < rows.length; i++) {
+    var rows = document.getElementById('fsetList').getElementsByClassName('fset'), i, j;
+    for (i = 0; i < rows.length; i++) {
       var idx = parseInt(rows[i].getAttribute('data-i'), 10), f = S.fish[idx];
       if (!f) continue;
-      var nm = rows[i].getElementsByClassName('sName')[0].value;
-      if (nm && nm.replace(/^\s+|\s+$/g, '')) f.name = nm.replace(/^\s+|\s+$/g, '');
+      var nm = rows[i].getElementsByClassName('sName')[0].value.replace(/^\s+|\s+$/g, '');
+      if (nm) f.name = nm;
       if (!f.custom) {
         var full = parseFloat(rows[i].getElementsByClassName('sFull')[0].value);
         if (!isNaN(full) && full >= 0) f.p2 = Math.round(full * 2);
-        var has = rows[i].getElementsByClassName('sHasHalf')[0].checked;
-        var hv = parseFloat(rows[i].getElementsByClassName('sHalf')[0].value);
-        f.half = has ? (isNaN(hv) ? Math.round(f.p2 / 2) : Math.round(hv * 2)) : 0;
       }
+      var raw = rows[i].getElementsByClassName('sCook')[0].value.split(/[、,]/), out = [];
+      for (j = 0; j < raw.length; j++) {
+        var t = raw[j].replace(/^\s+|\s+$/g, '');
+        if (t) out.push(t);
+      }
+      f.cook = out;
     }
   }
   document.getElementById('fsetList').addEventListener('click', function (e) {
@@ -460,11 +502,11 @@
   });
   document.getElementById('btnAddFish').onclick = function () {
     readSet();
-    S.fish.push({ id: 'f' + (new Date()).getTime(), name: '新しい魚', p2: 2, half: 0 });
+    S.fish.push({ id: 'f' + (new Date()).getTime(), name: '新しい魚', p2: 2, cook: ['刺身', '塩焼き'] });
     renderSet();
   };
   document.getElementById('btnDefault').onclick = function () {
-    if (!confirm('魚とポイントを初期状態に戻しますか？')) return;
+    if (!confirm('魚・ポイント・調理法を初期状態に戻しますか？')) return;
     S.fish = defFish(); renderSet(); save();
   };
   document.getElementById('btnSetOk').onclick = function () { readSet(); closeM('mSet'); render(); };
