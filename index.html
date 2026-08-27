@@ -44,10 +44,7 @@
   /* ===== 魚ボタン ===== */
   .sect { font-size: 14px; color: #5b7385; font-weight: 700; margin: 0 14px 8px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; padding: 0 12px 12px; }
-  .fish {
-    background: #fff; border-radius: 14px; box-shadow: 0 2px 6px rgba(0,0,0,.08);
-    padding: 16px 10px; text-align: center;
-  }
+  .fish { background: #fff; border-radius: 14px; box-shadow: 0 2px 6px rgba(0,0,0,.08); padding: 16px 10px; text-align: center; }
   .fish.over { opacity: .45; }
   .fish .nm { font-size: 22px; font-weight: 800; }
   .fish .pt { display: block; margin-top: 6px; font-size: 15px; font-weight: 700; color: #fff; background: #1f7ab5; border-radius: 999px; padding: 5px 0; }
@@ -59,6 +56,7 @@
   .item { background: #fff; border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
   .item .t { flex: 1; font-size: 19px; font-weight: 700; }
   .item .t small { display: block; font-size: 14px; font-weight: 600; color: #46789a; margin-top: 3px; }
+  .item .t small.ex { color: #7a8fa0; }
   .item .t small.non { color: #b58a2b; }
   .item .p { font-size: 19px; font-weight: 800; color: #1f7ab5; white-space: nowrap; }
   .item .del { background: #f2f5f7; color: #b0392f; font-size: 20px; font-weight: 800; border-radius: 10px; padding: 8px 16px; }
@@ -79,19 +77,20 @@
   .modal .row button { flex: 1; padding: 14px; font-size: 18px; font-weight: 800; border-radius: 12px; background: #eef4f8; }
   .modal .row button.ok { background: #0b3c5d; color: #fff; }
   .modal .row button.ok[disabled] { background: #c3d2dc; }
+  .modal .grouplbl { font-size: 13px; font-weight: 800; color: #5b7385; margin: 14px 0 6px; }
 
   /* 調理法チップ */
-  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; }
+  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 8px; }
   .chips button {
-    padding: 16px 6px; font-size: 17px; font-weight: 700; border-radius: 12px;
+    padding: 13px 6px; font-size: 17px; font-weight: 700; border-radius: 12px; line-height: 1.25;
     background: #eef4f8; color: #14212b; border: 2px solid #eef4f8;
   }
   .chips button.sel { background: #1f7ab5; border-color: #0b3c5d; color: #fff; }
-  .chips button.sel:before { content: "✓ "; }
-  .preview {
-    margin-top: 12px; background: #f2f7fa; border-radius: 12px; padding: 12px;
-    text-align: center; font-size: 19px; font-weight: 800; color: #0b3c5d; min-height: 54px;
-  }
+  .chips button .tag { display: block; font-size: 11px; font-weight: 700; margin-top: 3px; }
+  .chips button .rec { color: #c26a00; }
+  .chips button .ext { color: #8a97a2; }
+  .chips button.sel .rec, .chips button.sel .ext { color: #d9ecf7; }
+  .preview { margin-top: 14px; background: #f2f7fa; border-radius: 12px; padding: 12px; text-align: center; font-size: 19px; font-weight: 800; color: #0b3c5d; min-height: 54px; }
   .preview small { display: block; font-size: 13px; font-weight: 600; color: #7a8fa0; margin-top: 4px; }
 
   .disp { font-size: 44px; font-weight: 800; text-align: right; padding: 10px 14px; background: #f2f7fa; border-radius: 12px; min-height: 64px; }
@@ -107,7 +106,7 @@
   .fset .l2 label { display: block; font-size: 13px; color: #7a8fa0; margin-bottom: 4px; }
   .fset .l2 input { width: 100%; }
   .fset .rm { background: #f7e9e7; color: #b0392f; border-radius: 8px; padding: 8px 12px; font-size: 16px; font-weight: 700; }
-  .note { background: #fff8e1; border-left: 4px solid #ffb300; padding: 10px; font-size: 14px; border-radius: 6px; margin: 10px 0; line-height: 1.6; }
+  .note { background: #fff8e1; border-left: 4px solid #ffb300; padding: 10px; font-size: 14px; border-radius: 6px; margin: 10px 0; line-height: 1.7; }
   .ver { text-align: center; color: #9db1bf; font-size: 12px; padding: 6px 0 14px; }
 
   /* ===== スマホ幅 ===== */
@@ -129,8 +128,8 @@
     .item .t, .item .p { font-size: 17px; }
     .bottom { gap: 6px; padding: 6px; }
     .bottom button { font-size: 15px; padding: 14px 2px; }
-    .chips { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
-    .chips button { font-size: 15px; padding: 14px 4px; }
+    .chips { grid-template-columns: repeat(auto-fill, minmax(102px, 1fr)); }
+    .chips button { font-size: 15px; padding: 11px 4px; }
     .preview { font-size: 17px; }
     .disp { font-size: 36px; }
     .pad button { padding: 16px 0; font-size: 24px; }
@@ -177,6 +176,10 @@
     <h2 id="ckTitle">タイ</h2>
     <p class="hint">調理法をタップしてください。<br><b>2つ選ぶと、半分ずつ2種類</b>の調理になります。</p>
     <div class="chips" id="ckList"></div>
+    <div id="ckSubWrap" style="display:none">
+      <div class="grouplbl">骨・アラも使う（いくつでも選べます）</div>
+      <div class="chips" id="ckSubList"></div>
+    </div>
     <div class="preview" id="ckPrev">調理法を選んでください</div>
     <div class="row">
       <button data-close="mCook">やめる</button>
@@ -209,31 +212,49 @@
   <div class="modal">
     <h2>スタッフ設定</h2>
     <div class="note">
-      調理法は「、」（読点）で区切って入力してください。<br>
-      例）刺身、炙り、カルパッチョ、塩焼き、煮付け
+      調理法は「、」（読点）で区切ります。<br>
+      うしろに <b>◎</b> … おすすめ表示　　うしろに <b>＋</b> … 追加料金あり<br>
+      例）刺身◎、塩焼き、フライ◎＋
     </div>
     <div id="fsetList"></div>
     <div class="row"><button id="btnAddFish">＋ 魚を追加</button></div>
     <div class="row"><button id="btnDefault" style="background:#eef4f8">初期値に戻す</button></div>
     <div class="row"><button class="ok" id="btnSetOk">保存して閉じる</button></div>
-    <div class="ver">釣りポイント計算 お客様用 v3.0</div>
+    <div class="ver">釣りポイント計算 お客様用 v4.0</div>
   </div>
 </div>
 
 <script>
 (function () {
-  var KEY = 'zauo_fish_points_guest_v3';
+  var KEY = 'zauo_fish_points_guest_v4';
 
-  /* 調理法は店舗の説明表に合わせて設定画面から変更できます（初期値は暫定） */
+  /*
+    調理法は魚種別説明ページ（../魚種別説明ページ/）の内容に合わせている。
+    末尾の記号 … ◎＝おすすめ（説明ページで◎評価） ／ ＋＝追加料金あり
+    cook = 身の調理（1つ＝丸ごと／2つ＝半分ずつ）
+    sub  = 骨・アラを使う料理（身の調理とは別に追加できる）
+  */
   function defFish() {
     return [
-      { id: 'f1', name: 'サザエ',   p2: 2,  cook: ['刺身', 'つぼ焼き'] },
-      { id: 'f2', name: '車海老',   p2: 2,  cook: ['刺身', '塩焼き', '唐揚げ', '寿司'] },
-      { id: 'f3', name: 'アジ',     p2: 4,  cook: ['活き造り', '唐揚げ', 'なめろう', '塩焼き'] },
-      { id: 'f4', name: 'タイ',     p2: 14, cook: ['刺身', '炙り', 'カルパッチョ', '塩焼き', 'バジル焼き', '煮付け', '酒蒸し', 'バターソテー'] },
-      { id: 'f5', name: 'ヒラメ',   p2: 16, cook: ['刺身', '炙り', 'カルパッチョ', '塩焼き', '煮付け', 'バターソテー'] },
-      { id: 'f6', name: 'シマアジ', p2: 24, cook: ['刺身', '炙り', 'カルパッチョ', '塩焼き', '煮付け'] },
-      { id: 'f7', name: '伊勢海老', p2: 0,  custom: true, cook: ['活き造り', 'スチーム', '具足煮', '味噌汁'] }
+      { id: 'f1', name: 'サザエ', p2: 2,
+        cook: ['刺身', 'つぼ焼き'], sub: [] },
+      { id: 'f2', name: '車海老', p2: 2,
+        cook: ['刺身◎', '塩焼き', 'フライ◎＋'], sub: [] },
+      { id: 'f3', name: 'アジ', p2: 4,
+        cook: ['タタキ◎', '刺身', '塩焼き', '唐揚げ', 'フライ◎＋', '煮付け'],
+        sub: ['骨せんべい◎', 'みそ汁'] },
+      { id: 'f4', name: 'タイ', p2: 14,
+        cook: ['刺身◎', '焼き', '煮付け', '唐揚げ', '兜焼き'],
+        sub: ['あら炊き', 'みそ汁', '骨せんべい'] },
+      { id: 'f5', name: 'ヒラメ', p2: 16,
+        cook: ['刺身◎', '煮付け', '唐揚げ', 'フライ＋', 'バターソテー＋'],
+        sub: ['骨せんべい◎', 'みそ汁'] },
+      { id: 'f6', name: 'シマアジ', p2: 24,
+        cook: ['刺身◎', '焼き', '煮付け', '唐揚げ'],
+        sub: ['骨せんべい', 'みそ汁'] },
+      { id: 'f7', name: '伊勢海老', p2: 0, custom: true,
+        cook: ['刺身◎', '塩焼き', 'マヨネーズ焼き'],
+        sub: ['みそ汁◎'] }
     ];
   }
 
@@ -261,6 +282,17 @@
   }
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  /* '刺身◎＋' → { name:'刺身', rec:true, ext:true } */
+  function parseM(s) {
+    var t = String(s), rec = false, ext = false, ch;
+    while (t.length) {
+      ch = t.charAt(t.length - 1);
+      if (ch === '◎') { rec = true; t = t.slice(0, -1); }
+      else if (ch === '＋' || ch === '+') { ext = true; t = t.slice(0, -1); }
+      else break;
+    }
+    return { name: t, rec: rec, ext: ext };
   }
 
   /* ================= 描画 ================= */
@@ -311,9 +343,8 @@
     for (i = S.items.length - 1; i >= 0; i--) {
       it = S.items[i];
       h += '<div class="item"><div class="t">' + esc(it.name) +
-             (it.cook
-               ? '<small>' + esc(it.cook) + '</small>'
-               : '<small class="non">調理法はあとで</small>') +
+             (it.cook ? '<small>' + esc(it.cook) + '</small>' : '<small class="non">調理法はあとで</small>') +
+             (it.sub ? '<small class="ex">＋ ' + esc(it.sub) + '</small>' : '') +
            '</div>' +
            '<div class="p">' + fmt(it.p2) + ' pt</div>' +
            '<button class="del" data-del="' + i + '">×</button></div>';
@@ -322,73 +353,96 @@
   }
 
   /* ================= 調理法えらび ================= */
-  var ckFish = null, ckSel = [];
+  var ckFish = null, ckMain = [], ckSub = [];
 
   function findFish(id) {
     for (var i = 0; i < S.fish.length; i++) if (S.fish[i].id === id) return S.fish[i];
     return null;
   }
-  function cookLabel() {
-    if (ckSel.length === 0) return '';
-    if (ckSel.length === 1) return '丸ごと' + ckSel[0];
-    return ckSel[0] + 'と' + ckSel[1];
+  function idxOf(arr, v) {
+    for (var i = 0; i < arr.length; i++) if (arr[i] === v) return i;
+    return -1;
+  }
+  function mainLabel() {
+    if (ckMain.length === 0) return '';
+    if (ckMain.length === 1) return '丸ごと' + ckMain[0];
+    return ckMain[0] + 'と' + ckMain[1];
   }
   function openCook(f) {
-    ckFish = f; ckSel = [];
-    document.getElementById('ckTitle').textContent =
-      f.name + (f.custom ? '' : '　' + fmt(f.p2) + 'pt');
+    ckFish = f; ckMain = []; ckSub = [];
+    document.getElementById('ckTitle').textContent = f.name + (f.custom ? '' : '　' + fmt(f.p2) + 'pt');
     renderChips();
     openM('mCook');
   }
-  function renderChips() {
-    var w = document.getElementById('ckList'), h = '', i, c, list = ckFish.cook || [];
+  function chipHtml(list, selArr) {
+    var h = '', i, m;
     for (i = 0; i < list.length; i++) {
-      c = list[i];
-      h += '<button data-c="' + esc(c) + '"' + (indexOfSel(c) >= 0 ? ' class="sel"' : '') + '>' + esc(c) + '</button>';
+      m = parseM(list[i]);
+      h += '<button data-c="' + esc(list[i]) + '"' + (idxOf(selArr, m.name) >= 0 ? ' class="sel"' : '') + '>' +
+             esc(m.name) +
+             (m.rec ? '<span class="tag rec">★おすすめ</span>' : '') +
+             (m.ext ? '<span class="tag ext">＋追加料金</span>' : '') +
+           '</button>';
     }
-    w.innerHTML = h || '<div class="empty">調理法が登録されていません</div>';
-
-    var pv = document.getElementById('ckPrev');
-    if (ckSel.length === 0) {
-      pv.innerHTML = '<span style="color:#8ba0af;font-weight:600">調理法を選んでください</span>';
-    } else if (ckSel.length === 1) {
-      pv.innerHTML = esc(ckFish.name) + '（丸ごと' + esc(ckSel[0]) + '）<small>もう1つ選ぶと、半分ずつ2種類にできます</small>';
-    } else {
-      pv.innerHTML = esc(ckFish.name) + '（' + esc(ckSel[0]) + 'と' + esc(ckSel[1]) + '）<small>半分ずつ2種類の調理</small>';
-    }
-    document.getElementById('ckOk').disabled = (ckSel.length === 0);
+    return h;
   }
-  function indexOfSel(c) {
-    for (var i = 0; i < ckSel.length; i++) if (ckSel[i] === c) return i;
-    return -1;
+  function renderChips() {
+    document.getElementById('ckList').innerHTML =
+      chipHtml(ckFish.cook || [], ckMain) || '<div class="empty">調理法が登録されていません</div>';
+
+    var subs = ckFish.sub || [];
+    document.getElementById('ckSubWrap').style.display = subs.length ? 'block' : 'none';
+    if (subs.length) document.getElementById('ckSubList').innerHTML = chipHtml(subs, ckSub);
+
+    var pv = document.getElementById('ckPrev'), main = mainLabel(),
+        ex = ckSub.length ? '＋ ' + ckSub.join('・') : '';
+    if (!main && !ex) {
+      pv.innerHTML = '<span style="color:#8ba0af;font-weight:600">調理法を選んでください</span>';
+    } else {
+      pv.innerHTML = esc(ckFish.name) + (main ? '（' + esc(main) + '）' : '') +
+        (ex ? '<small>' + esc(ex) + '</small>' : '') +
+        (ckMain.length === 1 ? '<small>もう1つ選ぶと、半分ずつ2種類にできます</small>' : '') +
+        (ckMain.length === 2 ? '<small>半分ずつ2種類の調理</small>' : '');
+    }
+    document.getElementById('ckOk').disabled = (ckMain.length === 0);
   }
   document.getElementById('ckList').addEventListener('click', function (e) {
-    var c = e.target.getAttribute && e.target.getAttribute('data-c');
-    if (!c) return;
-    var i = indexOfSel(c);
-    if (i >= 0) ckSel.splice(i, 1);
+    var raw = e.target.getAttribute && e.target.getAttribute('data-c');
+    if (!raw) return;
+    var n = parseM(raw).name, i = idxOf(ckMain, n);
+    if (i >= 0) ckMain.splice(i, 1);
     else {
-      ckSel.push(c);
-      if (ckSel.length > 2) ckSel.shift(); /* 3つ目を選んだら古いほうを外す */
+      ckMain.push(n);
+      if (ckMain.length > 2) ckMain.shift(); /* 3つ目を選んだら古いほうを外す */
     }
     renderChips();
   });
-  function pushFish(cookText) {
+  document.getElementById('ckSubList').addEventListener('click', function (e) {
+    var raw = e.target.getAttribute && e.target.getAttribute('data-c');
+    if (!raw) return;
+    var n = parseM(raw).name, i = idxOf(ckSub, n);
+    if (i >= 0) ckSub.splice(i, 1); else ckSub.push(n);
+    renderChips();
+  });
+
+  function pushFish(cookText, subText) {
     var f = ckFish;
     closeM('mCook');
     if (f.custom) {
       keypad(f.name + ' のポイント', 0, function (p2) {
         if (p2 <= 0) return;
-        S.items.push({ name: f.name, cook: cookText, p2: p2 });
+        S.items.push({ name: f.name, cook: cookText, sub: subText, p2: p2 });
         render();
       });
       return;
     }
-    S.items.push({ name: f.name, cook: cookText, p2: f.p2 });
+    S.items.push({ name: f.name, cook: cookText, sub: subText, p2: f.p2 });
     render();
   }
-  document.getElementById('ckOk').onclick = function () { pushFish(cookLabel()); };
-  document.getElementById('ckSkip').onclick = function () { pushFish(''); };
+  document.getElementById('ckOk').onclick = function () {
+    pushFish(mainLabel(), ckSub.length ? ckSub.join('・') : '');
+  };
+  document.getElementById('ckSkip').onclick = function () { pushFish('', ''); };
 
   function closestAttr(el, root, attr) {
     while (el && el !== root) {
@@ -465,15 +519,24 @@
                '<input type="number" class="sFull" step="0.5" min="0" value="' + (f.custom ? '' : (f.p2 / 2)) + '"' + (f.custom ? ' disabled' : '') + '> pt' +
                '<button class="rm" data-rm="' + i + '">削除</button>' +
              '</div>' +
-             '<div class="l2"><label>調理法（、で区切る）' +
-               (f.custom ? '　※ポイントはその場で手入力' : '') + '</label>' +
+             '<div class="l2"><label>調理法（身）' + (f.custom ? '　※ポイントは手入力' : '') + '</label>' +
                '<input type="text" class="sCook" value="' + esc((f.cook || []).join('、')) + '"></div>' +
+             '<div class="l2"><label>骨・アラを使う料理</label>' +
+               '<input type="text" class="sSub" value="' + esc((f.sub || []).join('、')) + '"></div>' +
            '</div>';
     }
     w.innerHTML = h;
   }
+  function splitList(v) {
+    var raw = String(v).split(/[、,]/), out = [], j, t;
+    for (j = 0; j < raw.length; j++) {
+      t = raw[j].replace(/^\s+|\s+$/g, '');
+      if (t) out.push(t);
+    }
+    return out;
+  }
   function readSet() {
-    var rows = document.getElementById('fsetList').getElementsByClassName('fset'), i, j;
+    var rows = document.getElementById('fsetList').getElementsByClassName('fset'), i;
     for (i = 0; i < rows.length; i++) {
       var idx = parseInt(rows[i].getAttribute('data-i'), 10), f = S.fish[idx];
       if (!f) continue;
@@ -483,12 +546,8 @@
         var full = parseFloat(rows[i].getElementsByClassName('sFull')[0].value);
         if (!isNaN(full) && full >= 0) f.p2 = Math.round(full * 2);
       }
-      var raw = rows[i].getElementsByClassName('sCook')[0].value.split(/[、,]/), out = [];
-      for (j = 0; j < raw.length; j++) {
-        var t = raw[j].replace(/^\s+|\s+$/g, '');
-        if (t) out.push(t);
-      }
-      f.cook = out;
+      f.cook = splitList(rows[i].getElementsByClassName('sCook')[0].value);
+      f.sub = splitList(rows[i].getElementsByClassName('sSub')[0].value);
     }
   }
   document.getElementById('fsetList').addEventListener('click', function (e) {
@@ -502,7 +561,7 @@
   });
   document.getElementById('btnAddFish').onclick = function () {
     readSet();
-    S.fish.push({ id: 'f' + (new Date()).getTime(), name: '新しい魚', p2: 2, cook: ['刺身', '塩焼き'] });
+    S.fish.push({ id: 'f' + (new Date()).getTime(), name: '新しい魚', p2: 2, cook: ['刺身', '塩焼き'], sub: [] });
     renderSet();
   };
   document.getElementById('btnDefault').onclick = function () {
